@@ -79,4 +79,3 @@ regularRevolucionesYCambiarCubiertas = cambiarCubiertas.regularRevoluciones
 
 reparar :: Mecanico -> Auto -> Auto
 reparar mecanico = reparacion mecanico
-

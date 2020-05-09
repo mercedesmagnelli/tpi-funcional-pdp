@@ -58,4 +58,4 @@ main = hspec $ do
       
       it "Si Charly repara el auto de Dani, sólo dejará sus llantas sin desgaste" $ do
          (reparar charly autoDeDani) `shouldBe` autoDeDaniSinDesgaste
-         
+      
