@@ -17,6 +17,8 @@ data Auto = Auto {
  ultimoArreglo :: Fecha
 } deriving Show
 
+--- Punto 1 ---
+
 costoDeReparacion :: Auto -> Costo
 costoDeReparacion auto
  | longitudDeLaPatente auto == 7 = 12500
@@ -37,8 +39,18 @@ calculoPatental auto
 terminaEnCuatro :: Patente -> Bool
 terminaEnCuatro = ( == '4').(last)
 
+--- Punto 2 ---
+--- Parte A: Matías ---
+
 esPeligroso :: Auto -> Bool
 esPeligroso = (> 0.5).primeraLlanta.desgasteLlantas
 
 primeraLlanta :: [Desgaste] -> Desgaste
 primeraLlanta = head
+
+--- Parte B: Mercedes --- 
+
+necesitaRevision :: Auto -> Bool
+necesitaRevision = (<= 2015).anio.ultimoArreglo
+
+
