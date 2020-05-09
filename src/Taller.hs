@@ -36,3 +36,9 @@ calculoPatental auto
 
 terminaEnCuatro :: Patente -> Bool
 terminaEnCuatro = ( == '4').(last)
+
+esPeligroso :: Auto -> Bool
+esPeligroso = (> 0.5).primeraLlanta.desgasteLlantas
+
+primeraLlanta :: [Desgaste] -> Desgaste
+primeraLlanta = head

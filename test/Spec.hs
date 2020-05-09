@@ -20,5 +20,12 @@ main = hspec $ do
          costoDeReparacion autoDeSanti `shouldBe` 20000
          
       it "El costo de reparacion del auto de Dani es de $15000" $ do
-        costoDeReparacion autoDeDani `shouldBe` 15000         
-
+        costoDeReparacion autoDeDani `shouldBe` 15000
+   
+   describe "Pruebas de autos peligrosos" $ do
+      it "El auto de Alf no es peligroso" $ do
+         autoDeAlf `shouldNotSatisfy` esPeligroso
+      
+      it "El auto del Rasta es peligroso" $ do
+         autoDeRasta `shouldSatisfy` esPeligroso
+      
