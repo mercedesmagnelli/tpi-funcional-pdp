@@ -3,7 +3,8 @@ module Taller where
 type Desgaste = Float
 type Patente = String
 type Fecha = (Int, Int, Int)
-type Costo = Int 
+type Costo = Int
+type Reparacion = (Auto -> Auto)
  
 -- Definiciones base
 anio :: Fecha -> Int
@@ -15,14 +16,14 @@ data Auto = Auto {
  rpm :: Float,
  temperaturaAgua :: Float,
  ultimoArreglo :: Fecha
-} deriving Show
+} deriving (Show, Eq)
 
 --- Punto 1 ---
 
 costoDeReparacion :: Auto -> Costo
 costoDeReparacion auto
  | longitudDeLaPatente auto == 7 = 12500
- | {- longitudDeLaPatente auto == 6 && -} (patenteEstaEnRango.patente) auto = calculoPatental auto
+ | (patenteEstaEnRango.patente) auto = calculoPatental auto
  | otherwise = 15000
 
 longitudDeLaPatente :: Auto -> Int
@@ -53,4 +54,29 @@ primeraLlanta = head
 necesitaRevision :: Auto -> Bool
 necesitaRevision = (<= 2015).anio.ultimoArreglo
 
+--- Punto 3 ---
+--- Primera parte A: Matías ---
+
+data Mecanico = Mecanico {
+    nombre :: String,
+    reparacion :: Reparacion
+}
+
+alfa = Mecanico "Alfa" regularRevoluciones
+bravo = Mecanico "Bravo" cambiarCubiertas
+charly = Mecanico "Charly" regularRevolucionesYCambiarCubiertas
+
+regularRevoluciones :: Reparacion
+regularRevoluciones auto 
+ | rpm auto > 2000 = auto {rpm = 2000}
+ | otherwise = auto
+
+cambiarCubiertas :: Reparacion
+cambiarCubiertas auto = auto {desgasteLlantas = [0,0,0,0]}
+
+regularRevolucionesYCambiarCubiertas :: Reparacion
+regularRevolucionesYCambiarCubiertas = cambiarCubiertas.regularRevoluciones
+
+reparar :: Mecanico -> Auto -> Auto
+reparar mecanico = reparacion mecanico
 
