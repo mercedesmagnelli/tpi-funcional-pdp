@@ -55,8 +55,7 @@ necesitaRevision :: Auto -> Bool
 necesitaRevision = (<= 2015).anio.ultimoArreglo
 
 --- Punto 3 ---
---- Primera parte A: Matías ---
-
+--- Parte A: Matías ---
 data Mecanico = Mecanico {
     nombre :: String,
     reparacion :: Reparacion
@@ -65,6 +64,7 @@ data Mecanico = Mecanico {
 alfa = Mecanico "Alfa" regularRevoluciones
 bravo = Mecanico "Bravo" cambiarCubiertas
 charly = Mecanico "Charly" regularRevolucionesYCambiarCubiertas
+
 
 regularRevoluciones :: Reparacion
 regularRevoluciones auto 
@@ -76,6 +76,30 @@ cambiarCubiertas auto = auto {desgasteLlantas = [0,0,0,0]}
 
 regularRevolucionesYCambiarCubiertas :: Reparacion
 regularRevolucionesYCambiarCubiertas = cambiarCubiertas.regularRevoluciones
+
+--- Parte B ---
+tango = Mecanico "Tango" noHaceNada
+lima = Mecanico "Lima" cambioCubiertasDelanteras
+zulu = Mecanico "Zulu" cambioCubiertasDelanterasYRevisarTemperatura
+
+
+noHaceNada :: Reparacion
+noHaceNada = id
+
+cambioCubiertasDelanteras :: Reparacion
+cambioCubiertasDelanteras auto = auto {desgasteLlantas = [0,0] ++ (dosUltimasLlantas auto)}
+
+-- preguntar si es necesaria la abstraccion
+
+dosUltimasLlantas :: Auto -> [Desgaste]
+dosUltimasLlantas auto = (drop 2.desgasteLlantas) auto 
+
+
+cambioCubiertasDelanterasYRevisarTemperatura :: Reparacion
+cambioCubiertasDelanterasYRevisarTemperatura = cambioCubiertasDelanteras.revisarTemperatura
+
+revisarTemperatura :: Reparacion
+revisarTemperatura auto = auto {temperaturaAgua = 90}
 
 reparar :: Mecanico -> Auto -> Auto
 reparar mecanico = reparacion mecanico
