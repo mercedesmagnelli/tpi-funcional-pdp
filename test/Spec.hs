@@ -1,15 +1,15 @@
 import Test.Hspec
 import Taller
 
-autoDeAlf = Auto "BC658GB" [0.5,0.1,0,0.2] 2500 90 (07,05,2020)
+autoDeAlf = Auto "BC658GB" [0.5,0.1,0,0.2] 2500 76 (07,05,2020)
 autoDeAlfRegulandoA2000 = autoDeAlf {rpm = 2000}
 autoDeAlfRegulandoA2000YSinDesgaste = autoDeAlf {rpm = 2000, desgasteLlantas = [0,0,0,0]}
 autoDeAlfSinDesgasteEnLasRuedasDelanteras = autoDeAlf {desgasteLlantas = [0,0, 0, 0.2]}
 
-autoDeRasta = Auto "JJU564" [0.7,1.3,0.8,0] 1600 90 (23,01,2018)
+autoDeRasta = Auto "JJU564" [0.7,1.3,0.8,0] 1600 103 (23,01,2018)
 autoDeRastaSinDesgaste = autoDeRasta {desgasteLlantas = [0,0,0,0]}
 
-autoDeSanti = Auto "HGB475" [0,0.5,0.3,1] 1800 90 (11, 12, 2013)
+autoDeSanti = Auto "HGB475" [0,0.5,0.3,1] 1800 116 (11, 12, 2013)
 autoDeSantiSinDesgaste = autoDeSanti {desgasteLlantas = [0,0,0,0]}
 
 autoDeDani = Auto "XSE376" [1, 1.2, 0.7, 0.8] 2000 70 (08,02,2019)

@@ -77,7 +77,7 @@ cambiarCubiertas auto = auto {desgasteLlantas = [0,0,0,0]}
 regularRevolucionesYCambiarCubiertas :: Reparacion
 regularRevolucionesYCambiarCubiertas = cambiarCubiertas.regularRevoluciones
 
---- Parte B ---
+--- Parte B: Mercedes ---
 tango = Mecanico "Tango" noHaceNada
 lima = Mecanico "Lima" cambioCubiertasDelanteras
 zulu = Mecanico "Zulu" cambioCubiertasDelanterasYRevisarTemperatura
@@ -87,12 +87,11 @@ noHaceNada :: Reparacion
 noHaceNada = id
 
 cambioCubiertasDelanteras :: Reparacion
-cambioCubiertasDelanteras auto = auto {desgasteLlantas = [0,0] ++ (dosUltimasLlantas auto)}
+cambioCubiertasDelanteras auto = auto {desgasteLlantas = [0,0] ++ (llantasTraseras auto)}
 
--- preguntar si es necesaria la abstraccion
 
-dosUltimasLlantas :: Auto -> [Desgaste]
-dosUltimasLlantas auto = (drop 2.desgasteLlantas) auto 
+llantasTraseras :: Auto -> [Desgaste]
+llantasTraseras auto = (drop 2.desgasteLlantas) auto 
 
 
 cambioCubiertasDelanterasYRevisarTemperatura :: Reparacion
