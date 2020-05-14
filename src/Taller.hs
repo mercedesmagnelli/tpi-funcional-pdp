@@ -23,14 +23,14 @@ data Auto = Auto {
 costoDeReparacion :: Auto -> Costo
 costoDeReparacion auto
  | longitudDeLaPatente auto == 7 = 12500
- | (patenteEstaEnRango.patente) auto = calculoPatental auto
+ | (patenteEstaEntre.patente) auto = calculoPatental auto
  | otherwise = 15000
 
 longitudDeLaPatente :: Auto -> Int
-longitudDeLaPatente auto = (length.patente) auto
+longitudDeLaPatente = (length.patente) 
 
-patenteEstaEnRango :: Patente -> Bool
-patenteEstaEnRango patente = patente >= "DJ" && patente <= "NB"
+patenteEstaEntre :: Patente -> Bool
+patenteEstaEntre patente = patente >= "DJ" && patente <= "NB"
 
 calculoPatental :: Auto -> Int
 calculoPatental auto
@@ -44,10 +44,7 @@ terminaEnCuatro = ( == '4').(last)
 --- Parte A: Matías ---
 
 esPeligroso :: Auto -> Bool
-esPeligroso = (> 0.5).primeraLlanta.desgasteLlantas
-
-primeraLlanta :: [Desgaste] -> Desgaste
-primeraLlanta = head
+esPeligroso = (> 0.5).head.desgasteLlantas
 
 --- Parte B: Mercedes --- 
 
@@ -63,25 +60,27 @@ data Mecanico = Mecanico {
 
 alfa = Mecanico "Alfa" regularRevoluciones
 bravo = Mecanico "Bravo" cambiarCubiertas
-charly = Mecanico "Charly" regularRevolucionesYCambiarCubiertas
-
+charly = Mecanico "Charly" tareaDeAlfaYTareaDeBravo
 
 regularRevoluciones :: Reparacion
-regularRevoluciones auto 
- | rpm auto > 2000 = auto {rpm = 2000}
- | otherwise = auto
+regularRevoluciones auto = auto {rpm = min 2000 (rpm auto)}
 
 cambiarCubiertas :: Reparacion
-cambiarCubiertas auto = auto {desgasteLlantas = [0,0,0,0]}
+cambiarCubiertas auto = auto {desgasteLlantas = replicate 4 0}
 
-regularRevolucionesYCambiarCubiertas :: Reparacion
-regularRevolucionesYCambiarCubiertas = cambiarCubiertas.regularRevoluciones
+tareaDeAlfaYTareaDeBravo :: Reparacion
+tareaDeAlfaYTareaDeBravo = tareaDeAlfa.tareaDeBravo
+
+tareaDeAlfa :: Reparacion
+tareaDeAlfa = reparacion alfa
+
+tareaDeBravo :: Reparacion
+tareaDeBravo = reparacion bravo
 
 --- Parte B: Mercedes ---
 tango = Mecanico "Tango" noHaceNada
 lima = Mecanico "Lima" cambioCubiertasDelanteras
-zulu = Mecanico "Zulu" cambioCubiertasDelanterasYRevisarTemperatura
-
+zulu = Mecanico "Zulu" tareaDeLimaYRevisarTemperatura
 
 noHaceNada :: Reparacion
 noHaceNada = id
@@ -89,13 +88,14 @@ noHaceNada = id
 cambioCubiertasDelanteras :: Reparacion
 cambioCubiertasDelanteras auto = auto {desgasteLlantas = [0,0] ++ (llantasTraseras auto)}
 
-
 llantasTraseras :: Auto -> [Desgaste]
-llantasTraseras auto = (drop 2.desgasteLlantas) auto 
+llantasTraseras= (drop 2.desgasteLlantas) 
 
+tareaDeLima :: Reparacion
+tareaDeLima = reparacion lima
 
-cambioCubiertasDelanterasYRevisarTemperatura :: Reparacion
-cambioCubiertasDelanterasYRevisarTemperatura = cambioCubiertasDelanteras.revisarTemperatura
+tareaDeLimaYRevisarTemperatura :: Reparacion
+tareaDeLimaYRevisarTemperatura = tareaDeLima.revisarTemperatura
 
 revisarTemperatura :: Reparacion
 revisarTemperatura auto = auto {temperaturaAgua = 90}
