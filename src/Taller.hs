@@ -158,4 +158,3 @@ cantidadDesgaste = round . sum . map (* 10) . desgasteLlantas
 
 
 
-

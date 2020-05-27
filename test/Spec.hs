@@ -31,6 +31,7 @@ listaDeAutos4 = [autoDeDani] -- cumple
 listaDeAutos5 = [autoDeAlf] --  no 
 listaDeAutos6 = [autoDeDani, autoDeAlf, autoDeSanti, autoDeRasta] -- Con muchos que cumpla
 listaDeAutos7 = [autoDeAlf, autoDeDani, autoDeSanti, autoDeRasta] -- Con muchos que no cumpla
+listaDeAutos8 = []
 
 main :: IO()   
 main = hspec $ do
@@ -118,3 +119,7 @@ main = hspec $ do
       
       it "Una lista con cuatro autos con desgastes totales pares e impares no coincidentes con sus posiciones relativas dentro de la misma no está ordenada según el criterio solicitado" $ do
          listaDeAutos7 `shouldNotSatisfy` estaOrdenada
+
+      it "Una lista sin autos está ordenada según el criterio solicitado" $ do
+         listaDeAutos8 `shouldSatisfy` estaOrdenada
+      
