@@ -142,9 +142,3 @@ actualizarFecha fechaActual auto = auto {ultimoArreglo = fechaActual}
 
 
 
-
-
-
-
-
-

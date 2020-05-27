@@ -1,6 +1,6 @@
 import Test.Hspec
 import Taller
----Autos de prueba para primera parte
+-- Autos de prueba para primera parte
 
 autoDeAlf = Auto "BC658GB" [0.5,0.1,0,0.2] 2500 76 (07,05,2020)
 autoDeAlfRegulandoA2000 = autoDeAlf {rpm = 2000}
@@ -17,7 +17,7 @@ autoDeDani = Auto "XSE376" [1, 1.2, 0.7, 0.8] 2000 70 (08,02,2019)
 autoDeDaniSinDesgaste = autoDeDani {desgasteLlantas = [0,0,0,0]}
 autoDeDaniConTempA90YLlantasDelanterasSinDesgaste = autoDeDani {desgasteLlantas = [0,0,0.7,0.8], temperaturaAgua = 90}
 
--- autos de prueba para la segunda parte
+-- Autos de prueba para la segunda parte
 
 {- autoDeSantos = Auto "BC658GB" [0.5,0.1,0,0.2] 2500 76 (07,05,2020)
 autoDeRavena = Auto "BC658GB" [0.5,0.1,0,0.2] 2500 76 (07,05,2020)
@@ -32,6 +32,12 @@ listaDeAutos5 = [autoDeAlf] --  no
 listaDeAutos6 = [autoDeDani, autoDeAlf, autoDeSanti, autoDeRasta] -- Con muchos que cumpla
 listaDeAutos7 = [autoDeAlf, autoDeDani, autoDeSanti, autoDeRasta] -- Con muchos que no cumpla
 listaDeAutos8 = []
+
+autoDeAlfArregladoSegunOrdenReparacion1 = Auto "BC658GB" [0,0,0,0] 2000 90 (27,05,2020)
+autoDeRastaArregladoSegunOrdenReparacion2 = Auto "JJU564" [0,0,0,0] 1600 103 (28,05,2020)
+
+ordenReparacion1 = UnaOrdenReparacion (27, 05, 2020) [charly, zulu]
+ordenReparacion2 = UnaOrdenReparacion (28, 05, 2020) [alfa, bravo, tango]
 
 main :: IO()   
 main = hspec $ do
@@ -65,7 +71,7 @@ main = hspec $ do
       it "Un auto cuyo último arreglo fue hace mucho necesita revisión" $ do
          autoDeDani `shouldNotSatisfy` necesitaRevision
 
-   describe "Pruebas de reparacion" $ do
+   describe "Pruebas de reparación" $ do
       it "Si Alfa repara un auto que regula a más de 2000 rpm, lo dejará regulando a 2000 rpm " $ do
          (reparacion alfa autoDeAlf) `shouldBe` autoDeAlfRegulandoA2000
       
@@ -123,3 +129,12 @@ main = hspec $ do
       it "Una lista sin autos está ordenada según el criterio solicitado" $ do
          listaDeAutos8 `shouldSatisfy` estaOrdenada
       
+   describe "Pruebas de orden de reparación" $ do
+      
+      it "Si un auto regulando a 2500 pasa por la orden de reparacion con alfa, bravo y tango, dejará el auto regulando a 2000 y con todas las llantas sin desgaste" $ do
+         aplicarOrdenReparacion ordenReparacion2 autoDeRasta `shouldBe` autoDeRastaArregladoSegunOrdenReparacion2    
+
+      it "Si un auto que regula a menos de 2000 vueltas pasa por la orden de reparación con charly y zulu, su temperatura quedará en 90 y sus cautro cubiertas no tendrán desgaste" $ do
+         aplicarOrdenReparacion ordenReparacion1 autoDeAlf `shouldBe` autoDeAlfArregladoSegunOrdenReparacion1
+
+
