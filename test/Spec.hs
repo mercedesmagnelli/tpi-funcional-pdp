@@ -2,7 +2,7 @@ import Test.Hspec
 import Taller
 -- Autos de prueba para primera parte
 
-autoDeAlf = Auto "BC658GB" [0.5,0.1,0,0.2] 2500 76 (07,05,2020)
+autoDeAlf = Auto "BC658GB" [0.5,0.1,0,0.2] 2500 76 (07,05,2014)
 autoDeAlfRegulandoA2000 = autoDeAlf {rpm = 2000}
 autoDeAlfRegulandoA2000YSinDesgaste = autoDeAlf {rpm = 2000, desgasteLlantas = [0,0,0,0]}
 autoDeAlfSinDesgasteEnLasRuedasDelanteras = autoDeAlf {desgasteLlantas = [0,0, 0, 0.2]}
@@ -19,18 +19,22 @@ autoDeDaniConTempA90YLlantasDelanterasSinDesgaste = autoDeDani {desgasteLlantas 
 
 -- Autos de prueba para la segunda parte
 
-listaDeAutos1 = [autoDeDani, autoDeAlf] --cumple
-listaDeAutos2 = [autoDeDani, autoDeSanti] -- no cumple
+listaDeAutos1 = [autoDeDani, autoDeAlf] --cumple / cumple alf
+listaDeAutos2 = [autoDeDani, autoDeSanti] -- no cumple / 
 listaDeAutos3 = [autoDeRasta, autoDeAlf] -- no cumple
-listaDeAutos4 = [autoDeDani] -- cumple
+listaDeAutos4 = [autoDeDani] -- cumple // da 0
 listaDeAutos5 = [autoDeAlf] --  no 
-listaDeAutos6 = [autoDeDani, autoDeAlf, autoDeSanti, autoDeRasta] -- Con muchos que cumpla
+listaDeAutos6 = [autoDeDani, autoDeAlf, autoDeSanti, autoDeRasta] -- Con muchos que cumpla / dan 2 si y 2 no 
 listaDeAutos7 = [autoDeAlf, autoDeDani, autoDeSanti, autoDeRasta] -- Con muchos que no cumpla
 listaDeAutos8 = []
+listaDeAutos9 = [autoDeDani, autoDeRasta, autoDeAlfArregladoSegunOrdenReparacion1]
+listaDeAutos10 = [autoDeAlfArregladoSegunOrdenReparacion1, autoDeAlf]
+listaDeAutos11 = [autoDeSanti, autoDeRastaConFechaModificada]
+listaDeAutos12= [autoDeAlfArregladoSegunOrdenReparacion1, autoDeAlf, autoDeRastaConFechaModificada, autoDeRasta ]
 
 autoDeAlfArregladoSegunOrdenReparacion1 = Auto "BC658GB" [0,0,0,0] 2000 90 (27,05,2020)
 autoDeRastaArregladoSegunOrdenReparacion2 = Auto "JJU564" [0,0,0,0] 1600 103 (28,05,2020)
-
+autoDeRastaConFechaModificada = Auto "JJU564" [0.7,1.3,0.8,0] 1600 103 (23,01,2014)
 ordenReparacion1 = UnaOrdenReparacion (27, 05, 2020) [charly, zulu]
 ordenReparacion2 = UnaOrdenReparacion (28, 05, 2020) [alfa, bravo, tango]
 
@@ -40,6 +44,7 @@ listaMecanicos2' = ["Alfa", "Bravo", "Charly", "Tango", "Zulu", "Lima"]
 listaMecanicos3 = [bravo, charly, zulu, lima]
 listaMecanicos3' = ["Bravo", "Charly", "Zulu", "Lima"]
 listaVaciaDeMecanicos = []
+
 
 
 main :: IO()   
@@ -150,9 +155,20 @@ main = hspec $ do
       
       it "Si un auto que no está en condiciones es reparado Alfa, Bravo, Charly, Tango, Zulu o Lima, sólo Bravo, Charly, Zulu y Lima lo dejarán en condiciones" $ do -- Peligroso -> No peligroso
          losQueLoDejanEnCondiciones listaMecanicos2 autoDeDani `shouldBe` listaMecanicos3'
+   
+   describe "Pruebas de costo total de revision" $ do
 
+      it "Si a varios autos que no necesitan revision se les calcula el costo total, el mismo será $0 " $ do
+         costoTotalDeReparacion listaDeAutos9`shouldBe` 0
+      
+      it "Si dos autos de patentes de 7 letras, uno necesita revisión y el otro no, entonces el costo total es $12500 " $ do 
+         costoTotalDeReparacion listaDeAutos10 `shouldBe` 12500
 
+      it "Si dos autos de patentes de 6 letras que necesitan revision y cuyas patentes terminan una en 4 y la otra no, entonces el costo total es $38000 " $ do 
+         costoTotalDeReparacion listaDeAutos11 `shouldBe` 38000
 
+      it "Si en un conjunto de autos dos con patente 7, uno de ellos necesitando reparacion, y dos con patente de 6, y el que necesita reparacion su patente termina en 4, el costo entonces es de $31500 " $ do 
+         costoTotalDeReparacion listaDeAutos12 `shouldBe` 30500
 
 
 

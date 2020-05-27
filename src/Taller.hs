@@ -139,7 +139,8 @@ aplicarReparaciones orden auto = foldl (flip reparar) auto (tecnicos orden)
 actualizarFecha :: Fecha -> Auto  -> Auto
 actualizarFecha fechaActual auto = auto {ultimoArreglo = fechaActual}
 
--- Punto 6: Matías
+-- Punto 6 -- 
+-- Parte 1: Matías -- 
 
 losQueLoDejanEnCondiciones :: [Mecanico] -> Auto -> [String]
 losQueLoDejanEnCondiciones mecanicos auto = map nombre (filter (loDejaEnCondiciones auto) mecanicos)
@@ -148,4 +149,12 @@ loDejaEnCondiciones :: Auto -> Mecanico -> Bool
 -- loDejaEnCondiciones auto mecanico = not (esPeligroso (flip reparar auto mecanico))
 loDejaEnCondiciones auto = not . esPeligroso . flip reparar auto
 
+costoTotalDeReparacion :: [Auto] -> Costo
+costoTotalDeReparacion listaAutos = foldl calculoCostoIndividual  0 (filter necesitaRevision listaAutos)
 
+-- Punto 6 -- 
+--Parte 2: Mercedes --
+
+calculoCostoIndividual :: Costo -> Auto -> Costo
+-- calculoCostoIndividual costo auto =  costo + costoDeReparacion auto
+calculoCostoIndividual costo = (+ costo).costoDeReparacion
