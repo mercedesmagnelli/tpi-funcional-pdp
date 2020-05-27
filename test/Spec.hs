@@ -19,11 +19,6 @@ autoDeDaniConTempA90YLlantasDelanterasSinDesgaste = autoDeDani {desgasteLlantas 
 
 -- Autos de prueba para la segunda parte
 
-{- autoDeSantos = Auto "BC658GB" [0.5,0.1,0,0.2] 2500 76 (07,05,2020)
-autoDeRavena = Auto "BC658GB" [0.5,0.1,0,0.2] 2500 76 (07,05,2020)
-autoDeMedina = Auto "BC658GB" [0.5,0.1,0,0.2] 2500 76 (07,05,2020)
-autoDeLampone = Auto "BC658GB" [0.5,0.1,0,0.2] 2500 76 (07,05,2020) -}
-
 listaDeAutos1 = [autoDeDani, autoDeAlf] --cumple
 listaDeAutos2 = [autoDeDani, autoDeSanti] -- no cumple
 listaDeAutos3 = [autoDeRasta, autoDeAlf] -- no cumple
@@ -38,6 +33,14 @@ autoDeRastaArregladoSegunOrdenReparacion2 = Auto "JJU564" [0,0,0,0] 1600 103 (28
 
 ordenReparacion1 = UnaOrdenReparacion (27, 05, 2020) [charly, zulu]
 ordenReparacion2 = UnaOrdenReparacion (28, 05, 2020) [alfa, bravo, tango]
+
+listaMecanicos1 = [alfa, tango]
+listaMecanicos2 = [alfa, bravo, charly, tango, zulu, lima]
+listaMecanicos2' = ["Alfa", "Bravo", "Charly", "Tango", "Zulu", "Lima"]
+listaMecanicos3 = [bravo, charly, zulu, lima]
+listaMecanicos3' = ["Bravo", "Charly", "Zulu", "Lima"]
+listaVaciaDeMecanicos = []
+
 
 main :: IO()   
 main = hspec $ do
@@ -136,5 +139,40 @@ main = hspec $ do
 
       it "Si un auto que regula a menos de 2000 vueltas pasa por la orden de reparación con charly y zulu, su temperatura quedará en 90 y sus cautro cubiertas no tendrán desgaste" $ do
          aplicarOrdenReparacion ordenReparacion1 autoDeAlf `shouldBe` autoDeAlfArregladoSegunOrdenReparacion1
+
+   describe "Pruebas de mecanicos que dejan un auto en condiciones" $ do
+
+      it "Si un auto que no está en condiciones es reparado por Alfa o Tango, seguirá no estando en condiciones" $ do -- Peligroso -> Peligroso
+         losQueLoDejanEnCondiciones listaMecanicos1 autoDeRasta `shouldBe` listaVaciaDeMecanicos
+      
+      it "Si un auto en condiciones es reparado por cualquier mecánico, seguirá estando en condiciones" $ do -- No peligroso -> No peligroso (es imposible que se dé el caso No peligroso -> Peligroso)
+         losQueLoDejanEnCondiciones listaMecanicos2 autoDeSanti `shouldBe` listaMecanicos2'
+      
+      it "Si un auto que no está en condiciones es reparado Alfa, Bravo, Charly, Tango, Zulu o Lima, sólo Bravo, Charly, Zulu y Lima lo dejarán en condiciones" $ do -- Peligroso -> No peligroso
+         losQueLoDejanEnCondiciones listaMecanicos2 autoDeDani `shouldBe` listaMecanicos3'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

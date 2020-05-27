@@ -58,7 +58,7 @@ necesitaRevision = (<= 2015).anio.ultimoArreglo
 data Mecanico = Mecanico {
     nombre :: String,
     reparacion :: Reparacion
-}
+} 
 
 alfa = Mecanico "Alfa" regularRevoluciones
 bravo = Mecanico "Bravo" cambiarCubiertas
@@ -134,11 +134,18 @@ aplicarOrdenReparacion :: OrdenReparacion -> Auto -> Auto
 aplicarOrdenReparacion orden = actualizarFecha (fecha orden) . aplicarReparaciones orden
 
 aplicarReparaciones :: OrdenReparacion -> Auto -> Auto
-aplicarReparaciones orden auto = foldl (\auto mecanico -> reparacion mecanico auto) auto (tecnicos orden)
+aplicarReparaciones orden auto = foldl (flip reparar) auto (tecnicos orden)
 
 actualizarFecha :: Fecha -> Auto  -> Auto
 actualizarFecha fechaActual auto = auto {ultimoArreglo = fechaActual}
 
+-- Punto 6: Matías
 
+losQueLoDejanEnCondiciones :: [Mecanico] -> Auto -> [String]
+losQueLoDejanEnCondiciones mecanicos auto = map nombre (filter (loDejaEnCondiciones auto) mecanicos)
+
+loDejaEnCondiciones :: Auto -> Mecanico -> Bool
+-- loDejaEnCondiciones auto mecanico = not (esPeligroso (flip reparar auto mecanico))
+loDejaEnCondiciones auto = not . esPeligroso . flip reparar auto
 
 
