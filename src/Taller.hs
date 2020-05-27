@@ -18,6 +18,8 @@ data Auto = Auto {
  ultimoArreglo :: Fecha
 } deriving (Show, Eq)
 
+-- Parte 1
+
 --- Punto 1 ---
 
 costoDeReparacion :: Auto -> Costo
@@ -102,3 +104,58 @@ revisarTemperatura auto = auto {temperaturaAgua = 90}
 
 reparar :: Mecanico -> Auto -> Auto
 reparar mecanico = reparacion mecanico
+
+-- Parte 2
+
+-- Punto 4
+
+estaOrdenada :: [Auto] -> Bool
+estaOrdenada [x] = criterioImpar x
+estaOrdenada [] = True 
+estaOrdenada (x:xs) = (criterioImpar x) && (criterioPar (head xs)) && estaOrdenada (tail xs)
+
+criterioImpar :: Auto -> Bool
+criterioImpar = odd . cantidadDesgaste 
+
+criterioPar :: Auto -> Bool
+criterioPar = even . cantidadDesgaste
+
+cantidadDesgaste :: Auto -> Int
+cantidadDesgaste = round . sum . map (* 10) . desgasteLlantas
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
