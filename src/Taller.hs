@@ -123,31 +123,21 @@ criterioPar = even . cantidadDesgaste
 cantidadDesgaste :: Auto -> Int
 cantidadDesgaste = round . sum . map (* 10) . desgasteLlantas
 
+-- Punto 5
 
+data OrdenReparacion = UnaOrdenReparacion {
+    fecha :: Fecha,
+    tecnicos :: [Mecanico]
+} 
 
+aplicarOrdenReparacion :: OrdenReparacion -> Auto -> Auto
+aplicarOrdenReparacion orden = actualizarFecha (fecha orden) . aplicarReparaciones orden
 
+aplicarReparaciones :: OrdenReparacion -> Auto -> Auto
+aplicarReparaciones orden auto = foldl (\auto mecanico -> reparacion mecanico auto) auto (tecnicos orden)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+actualizarFecha :: Fecha -> Auto  -> Auto
+actualizarFecha fechaActual auto = auto {ultimoArreglo = fechaActual}
 
 
 
