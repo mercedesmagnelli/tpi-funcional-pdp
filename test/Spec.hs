@@ -24,19 +24,17 @@ listaDeAutos2 = [autoDeDani, autoDeSanti] -- no cumple /
 listaDeAutos3 = [autoDeRasta, autoDeAlf] -- no cumple
 listaDeAutos4 = [autoDeDani] -- cumple // da 0
 listaDeAutos5 = [autoDeAlf] --  no 
-listaDeAutos6 = [autoDeDani, autoDeAlf, autoDeSanti, autoDeRasta] -- Con muchos que cumpla / dan 2 si y 2 no 
-listaDeAutos7 = [autoDeAlf, autoDeDani, autoDeSanti, autoDeRasta] -- Con muchos que no cumpla
 listaDeAutos8 = []
 listaDeAutos9 = [autoDeDani, autoDeRasta, autoDeAlfArregladoSegunOrdenReparacion1]
-listaDeAutos10 = [autoDeAlfArregladoSegunOrdenReparacion1, autoDeAlf]
 listaDeAutos11 = [autoDeSanti, autoDeRastaConFechaModificada]
 listaDeAutos12= [autoDeAlfArregladoSegunOrdenReparacion1, autoDeAlf, autoDeRastaConFechaModificada, autoDeRasta ]
 
 autoDeAlfArregladoSegunOrdenReparacion1 = Auto "BC658GB" [0,0,0,0] 2000 90 (27,05,2020)
-autoDeRastaArregladoSegunOrdenReparacion2 = Auto "JJU564" [0,0,0,0] 1600 103 (28,05,2020)
+autoDeRastaArregladoSegunOrdenReparacion2 = Auto "JJU564" [0.7,1.3,0.8,0] 1600 103 (04,06,2020)
 autoDeRastaConFechaModificada = Auto "JJU564" [0.7,1.3,0.8,0] 1600 103 (23,01,2014)
 ordenReparacion1 = UnaOrdenReparacion (27, 05, 2020) [charly, zulu]
-ordenReparacion2 = UnaOrdenReparacion (28, 05, 2020) [alfa, bravo, tango]
+ordenReparacion2 = UnaOrdenReparacion (04, 06, 2020) [alfa, tango]
+
 
 listaMecanicos1 = [alfa, tango]
 listaMecanicos2 = [alfa, bravo, charly, tango, zulu, lima]
@@ -128,21 +126,15 @@ main = hspec $ do
       it "Una lista con un solo auto que tiene una cantidad de desgaste par no está ordenada según el criterio solicitado" $ do
          listaDeAutos5 `shouldNotSatisfy` estaOrdenada
       
-      it "Una lista con cuatro autos con desgastes totales pares e impares coincidentes con sus posiciones relativas dentro de la misma está ordenada según el criterio solicitado" $ do
-         listaDeAutos6 `shouldSatisfy` estaOrdenada
-      
-      it "Una lista con cuatro autos con desgastes totales pares e impares no coincidentes con sus posiciones relativas dentro de la misma no está ordenada según el criterio solicitado" $ do
-         listaDeAutos7 `shouldNotSatisfy` estaOrdenada
-
       it "Una lista sin autos está ordenada según el criterio solicitado" $ do
          listaDeAutos8 `shouldSatisfy` estaOrdenada
       
    describe "Pruebas de orden de reparación" $ do
-      
-      it "Si un auto regulando a 2500 pasa por la orden de reparacion con alfa, bravo y tango, dejará el auto regulando a 2000 y con todas las llantas sin desgaste" $ do
-         aplicarOrdenReparacion ordenReparacion2 autoDeRasta `shouldBe` autoDeRastaArregladoSegunOrdenReparacion2    
+   
+      it "Si un auto regulando a menos de 2000 vueltas pasa por la orden de reparación con Alfa y Tango, sólo se actualizará su última fecha de reparación" $ do
+         aplicarOrdenReparacion ordenReparacion2 autoDeRasta `shouldBe` autoDeRastaArregladoSegunOrdenReparacion2
 
-      it "Si un auto que regula a menos de 2000 vueltas pasa por la orden de reparación con charly y zulu, su temperatura quedará en 90 y sus cautro cubiertas no tendrán desgaste" $ do
+      it "Si un auto que regula a menos de 2000 vueltas pasa por la orden de reparación con charly y zulu, su temperatura quedará en 90 y sus cuatro cubiertas no tendrán desgaste" $ do
          aplicarOrdenReparacion ordenReparacion1 autoDeAlf `shouldBe` autoDeAlfArregladoSegunOrdenReparacion1
 
    describe "Pruebas de mecanicos que dejan un auto en condiciones" $ do
@@ -158,17 +150,14 @@ main = hspec $ do
    
    describe "Pruebas de costo total de revision" $ do
 
-      it "Si a varios autos que no necesitan revision se les calcula el costo total, el mismo será $0 " $ do
+      it "Si a varios autos que no necesitan revision se les calcula el costo total, el mismo será $0 " $ do --ninguno
          costoTotalDeReparacion listaDeAutos9`shouldBe` 0
       
-      it "Si dos autos de patentes de 7 letras, uno necesita revisión y el otro no, entonces el costo total es $12500 " $ do 
-         costoTotalDeReparacion listaDeAutos10 `shouldBe` 12500
-
       it "Si dos autos de patentes de 6 letras que necesitan revision y cuyas patentes terminan una en 4 y la otra no, entonces el costo total es $38000 " $ do 
-         costoTotalDeReparacion listaDeAutos11 `shouldBe` 38000
+         costoTotalDeReparacion listaDeAutos11 `shouldBe` 38000 -- todos
 
       it "Si en un conjunto de autos dos con patente 7, uno de ellos necesitando reparacion, y dos con patente de 6, y el que necesita reparacion su patente termina en 4, el costo entonces es de $31500 " $ do 
-         costoTotalDeReparacion listaDeAutos12 `shouldBe` 30500
+         costoTotalDeReparacion listaDeAutos12 `shouldBe` 30500 --unos si y otros no 
 
 
 
